@@ -6,3 +6,22 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgis/postgis
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cool-geo-app
+    volumes:
+      - ./db/data/:/tmp/data
+      - ./db/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
