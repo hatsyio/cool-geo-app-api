@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "cool-geo-app-api"
+version = "0.1.0"
+description = "Cool geo app API"
+authors = ["Josep Pascual <joseppascualbadia@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.78.0"
+uvicorn = "^0.17.6"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^2.19.0"
+commitizen = "^2.27.1"
+flake8 = "^4.0.1"
+black = "^22.3.0"
+isort = "^5.10.1"
+pytest = "^7.1.2"
+requests = "^2.28.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
