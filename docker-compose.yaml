@@ -1,13 +1,19 @@
 version: "3"
 services:
-  cool-geo-app-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
+#  cool-geo-app-api:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#    environment:
+#        - "DB_HOST=postgres"
+#        - "DB_PORT=5432"
+#        - "DB_USER=postgres"
+#        - "DB_PASSWORD=postgres"
+#        - "DB_NAME=cool-geo-app"
+#    depends_on:
+#      - postgres
   postgres:
     image: postgis/postgis
     restart: always
