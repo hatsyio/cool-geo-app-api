@@ -105,3 +105,11 @@ async def get_postal_codes(
     postal_code_service: PostalCodeService = Depends(),
 ) -> [PostalCode]:
     return postal_code_service.get_postal_codes()
+
+
+@app.get("/postal-codes/{postal_code}")
+async def get_postal_codes(
+    postal_code: str,
+    postal_code_service: PostalCodeService = Depends(),
+) -> [PostalCode]:
+    return postal_code_service.get_postal_code(postal_code)
