@@ -6,7 +6,7 @@ from app.database.template_loader import TemplateLoader
 from app.service.models import Geometry, PostalCode
 
 
-class PostalCodeService:
+class PostalCodesService:
     def __init__(
         self,
         database: Database = Depends(),
