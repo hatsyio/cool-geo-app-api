@@ -10,7 +10,7 @@ CREATE TABLE paystats
 
 CREATE TABLE postal_codes (
     id INT,
-    code INT,
+    code VARCHAR,
     the_geom GEOMETRY
 );
 

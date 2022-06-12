@@ -258,7 +258,7 @@ plugins = ["setuptools"]
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -272,7 +272,7 @@ i18n = ["Babel (>=2.7)"]
 name = "markupsafe"
 version = "2.1.1"
 description = "Safely add untrusted strings to HTML/XML markup."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -617,7 +617,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "cdd6c1ee8a7477de75c1c838cff0067ee3fc01402dd30ff98495a4bfed4488a9"
+content-hash = "2116b44971e10c431974e337b6e1677705edfa905230a8c4e8dd3792a0a23cd3"
 
 [metadata.files]
 anyio = [
