@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import lru_cache
 
 from fastapi import APIRouter, Depends, Path, Query
 
@@ -11,21 +12,25 @@ router = APIRouter(
 )
 
 
+@lru_cache
 @router.get("/ages")
 async def get_payments_ages(payments_service: PaymentsService = Depends()) -> [str]:
     return payments_service.get_ages()
 
 
+@lru_cache
 @router.get("/genders")
 async def get_payments_genders(payments_service: PaymentsService = Depends()) -> [str]:
     return payments_service.get_genders()
 
 
+@lru_cache
 @router.get("/months")
 async def get_payments_months(payments_service: PaymentsService = Depends()) -> [str]:
     return payments_service.get_months()
 
 
+@lru_cache
 @router.get("/aggregation")
 async def get_payments_aggregation(
     ages: list[str] | None = Query(default=None),
@@ -56,6 +61,7 @@ async def get_payments_aggregation(
     )
 
 
+@lru_cache
 @router.get("/aggregation/postal-codes/{postal_code}")
 async def get_payments_aggregation_by_postal_code(
     postal_code: str,
@@ -85,6 +91,7 @@ async def get_payments_aggregation_by_postal_code(
     )
 
 
+@lru_cache
 @router.get("/aggregation/time-series/{start_date}/{end_date}")
 async def get_payments_aggregation_with_time_series(
     start_date: str = Path(regex=r"^\d{4}-\d{2}-\d{2}$"),
