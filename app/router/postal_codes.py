@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from fastapi import APIRouter, Depends, Query
 
 from app.service.models import Geometry, PostalCode
@@ -9,6 +11,7 @@ router = APIRouter(
 )
 
 
+@lru_cache
 @router.get("/")
 async def get_postal_codes(
     postal_codes_service: PostalCodesService = Depends(),
@@ -16,6 +19,7 @@ async def get_postal_codes(
     return postal_codes_service.get_postal_codes()
 
 
+@lru_cache
 @router.get("/find")
 async def find_postal_codes(
     postal_codes: list[str] | None = Query(default=None),
@@ -24,6 +28,7 @@ async def find_postal_codes(
     return postal_codes_service.find_postal_codes(postal_codes)
 
 
+@lru_cache
 @router.get("/union")
 async def get_postal_codes_union(
     postal_codes: list[str] | None = Query(default=None),
