@@ -35,5 +35,3 @@ def test_get_postal_codes():
     assert response.json()
     for row in response.json():
         assert row.keys() == {"code", "the_geom"}
-
-

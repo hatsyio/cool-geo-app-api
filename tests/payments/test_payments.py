@@ -93,6 +93,4 @@ def test_get_aggregation_with_time_series():
         assert (
             datetime.datetime.strptime(row["p_month"], "%Y-%m-%d").date() >= start_date
         )
-        assert (
-            datetime.datetime.strptime(row["p_month"], "%Y-%m-%d").date() <= end_date
-        )
+        assert datetime.datetime.strptime(row["p_month"], "%Y-%m-%d").date() <= end_date
