@@ -17,12 +17,8 @@ class Database:
             password=os.getenv("DB_PASSWORD"),
         )
 
-    def disconnect(self):
+    def shutdown(self):
         self.connection.close()
-
-    def refresh_connection(self):
-        self.disconnect()
-        self.connect()
 
     def get_connection(self):
         return self.connection
