@@ -4,6 +4,7 @@ from typing import List, Optional
 from fastapi import Depends
 from jinja2 import Template
 
+from app.database.adapter import PaymentsAdapter
 from app.database.database import Database
 from app.database.template_loader import TemplateLoader
 from app.service.models import PaymentAggregation
@@ -19,13 +20,13 @@ class PaymentsService:
         self.template_loader = template_loader
 
     def get_ages(self) -> list[str]:
-        return self._run_select_distinct("p_age")
+        return self._run_select_distinct(PaymentsAdapter.AGE_COLUMN)
 
     def get_genders(self) -> list[str]:
-        return self._run_select_distinct("p_gender")
+        return self._run_select_distinct(PaymentsAdapter.GENDER_COLUMN)
 
     def get_months(self) -> list[str]:
-        return self._run_select_distinct("p_month")
+        return self._run_select_distinct(PaymentsAdapter.MONTH_COLUMN)
 
     def _run_select_distinct(self, column) -> list[str]:
         template: Template = self.template_loader.load_template(
@@ -33,7 +34,7 @@ class PaymentsService:
         )
         query = template.render(column=column)
         data = self.database.run_query(query)
-        return [str(row[0]) for row in data]
+        return [str(row[column]) for row in data]
 
     def get_aggregation(
         self,
@@ -49,59 +50,62 @@ class PaymentsService:
     ) -> [PaymentAggregation]:
 
         columns = []
-        select_fields: str = ""
-        group_by: str = ""
 
         if add_ages:
-            columns.append("p_age")
+            columns.append(PaymentsAdapter.AGE_COLUMN)
         if add_genders:
-            columns.append("p_gender")
+            columns.append(PaymentsAdapter.GENDER_COLUMN)
         if add_postal_code:
-            columns.append("code")
+            columns.append(PaymentsAdapter.POSTAL_CODE_COLUMN)
         if add_month:
-            columns.append("p_month")
+            columns.append(PaymentsAdapter.MONTH_COLUMN)
 
-        if columns:
-            select_fields = ",".join(columns) + ","
-            group_by = "group by " + ",".join(columns)
+        select_statement = PaymentsAdapter.get_select_statement(columns)
 
         filters = []
         params = tuple()
         if genders:
-            params += tuple(genders)
-            placeholders = ",".join(["%s"] * len(genders))
-            filters.append(" and p_gender in (" + placeholders + ") ")
+            gender_params, gender_filter = PaymentsAdapter.get_genders_filter(genders)
+            params += gender_params
+            filters.append(gender_filter)
         if ages:
-            params += tuple(ages)
-            placeholders = ",".join(["%s"] * len(ages))
-            filters.append(" and p_age in (" + placeholders + ") ")
+            ages_params, ages_filter = PaymentsAdapter.get_ages_filter(ages)
+            params += ages_params
+            filters.append(ages_filter)
         if start_date:
-            params += (start_date,)
-            filters.append(" and p_month >= %s ")
+            (
+                start_date_params,
+                start_date_filter,
+            ) = PaymentsAdapter.get_start_date_filter(start_date)
+            params += start_date_params
+            filters.append(start_date_filter)
         if end_date:
-            params += (end_date,)
-            filters.append(" and p_month <= %s ")
+            end_date_params, end_date_filter = PaymentsAdapter.get_end_date_filter(
+                end_date
+            )
+            params += end_date_params
+            filters.append(end_date_filter)
         if postal_codes:
-            params += tuple(postal_codes)
-            placeholders = ",".join(["%s"] * len(postal_codes))
-            filters.append(" and code in (" + placeholders + ") ")
+            (
+                postal_codes_params,
+                postal_codes_filter,
+            ) = PaymentsAdapter.get_postal_codes_filter(postal_codes)
+            params += postal_codes_params
+            filters.append(postal_codes_filter)
 
         where_clause = "".join(filters)
+
+        group_by_statement = PaymentsAdapter.get_group_by_statement(columns)
+
         template: Template = self.template_loader.load_template(
             "select_aggregation_from_paystats.jinja"
         )
         query = template.render(
-            select_fields=select_fields, where_clause=where_clause, group_by=group_by
+            select_statement=select_statement,
+            where_clause=where_clause,
+            group_by_statement=group_by_statement,
         )
 
         data = self.database.run_query_with_params(query, params)
 
-        result = []
-        for row in data:
-            d = {}
-            for i in range(len(columns)):
-                d[columns[i]] = row[i]
-            d["amount"] = row[-1]
-            result.append(PaymentAggregation(**d))
-
-        return result
+        return [PaymentAggregation(**row) for row in data]

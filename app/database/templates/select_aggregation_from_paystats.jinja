@@ -2,10 +2,10 @@ with reduced_postal_codes as (
     select id, code
     from postal_codes
 )
-select {{ select_fields }} coalesce(sum(amount), 0) as amount
+{{ select_statement }}
 from paystats p
     inner join reduced_postal_codes pc on pc.id = p.postal_code_id
 where 1=1
     {{ where_clause }}
-{{ group_by }}
+{{ group_by_statement }}
 ;

@@ -1,6 +1,7 @@
 import os
 
 import psycopg2
+import psycopg2.extras
 
 
 class Database:
@@ -24,14 +25,14 @@ class Database:
         return self.connection
 
     def run_query(self, query):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
         return result
 
     def run_query_with_params(self, query, params):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute(query, params)
         result = cursor.fetchall()
         cursor.close()

@@ -1,4 +1,4 @@
-select st_union(the_geom), st_astext(st_union(the_geom))
+select st_union(the_geom) as the_geom, st_astext(st_union(the_geom)) as the_geom_as_text
 from postal_codes
 where 1=1
     {{ postal_codes_filter}}
