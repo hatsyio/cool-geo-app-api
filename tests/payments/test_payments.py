@@ -21,12 +21,12 @@ def mock_database(mock_data):
 
 def test_get_ages():
     mock_data = [
-        tuple("<=24"),
-        tuple("25-34"),
-        tuple("35-44"),
-        tuple("45-54"),
-        tuple("55-64"),
-        tuple(">=65"),
+        {"p_age": "<=24"},
+        {"p_age": "25-34"},
+        {"p_age": "35-44"},
+        {"p_age": "45-54"},
+        {"p_age": "55-64"},
+        {"p_age": ">=65"},
     ]
     mock_database(mock_data)
 
@@ -37,7 +37,7 @@ def test_get_ages():
 
 
 def test_get_aggregation():
-    mock_data = [(89024.69868,)]
+    mock_data = [{"amount": 89024.69868}]
     mock_database(mock_data)
 
     response = client.get("/payments/aggregation")
@@ -54,7 +54,7 @@ def test_get_aggregation():
 
 
 def test_get_aggregation_by_postal_code():
-    mock_data = [("28019", 89024.69868)]
+    mock_data = [{"code": "28019", "amount": 89024.69868}]
     mock_database(mock_data)
 
     response = client.get("/payments/aggregation/postal-codes/28019")
@@ -72,7 +72,7 @@ def test_get_aggregation_by_postal_code():
 
 
 def test_get_aggregation_with_time_series():
-    mock_data = [(datetime.date(2015, 9, 1), 89024.69868)]
+    mock_data = [{"p_month": datetime.date(2015, 9, 1), "amount": 89024.69868}]
     mock_database(mock_data)
 
     start_date = datetime.date(2015, 1, 1)

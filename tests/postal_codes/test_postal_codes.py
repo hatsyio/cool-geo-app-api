@@ -21,11 +21,11 @@ def mock_database(mock_data):
 
 def test_get_postal_codes():
     mock_data = [
-        ("28019", 0xDEADBEEF0),
-        ("28018", 0xDEADBEEF1),
-        ("28017", 0xDEADBEEF2),
-        ("28016", 0xDEADBEEF3),
-        ("28015", 0xDEADBEEF4),
+        {"code": "28019", "the_geom": 0xDEADBEEF0},
+        {"code": "28018", "the_geom": 0xDEADBEEF1},
+        {"code": "28017", "the_geom": 0xDEADBEEF2},
+        {"code": "28016", "the_geom": 0xDEADBEEF3},
+        {"code": "28015", "the_geom": 0xDEADBEEF4},
     ]
     mock_database(mock_data)
 
