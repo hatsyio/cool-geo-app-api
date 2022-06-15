@@ -131,6 +131,12 @@ If you want to run the project directly on your machine for development purposes
 pip install poetry
 ```
 
+0. Setup pre-commit framework
+   ```sh
+   pre-commit install
+   pre-commit install --hook-type commit-msg
+   ```
+
 1. Clone the repo
    ```sh
    git clone https://github.com/hatsyio/cool-geo-app-api.git
