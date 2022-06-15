@@ -1,0 +1,11 @@
+with reduced_postal_codes as (
+    select id, code
+    from postal_codes
+)
+{{ select_statement }}
+from paystats p
+    inner join reduced_postal_codes pc on pc.id = p.postal_code_id
+where 1=1
+    {{ where_clause }}
+{{ group_by_statement }}
+;

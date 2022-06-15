@@ -1,0 +1,35 @@
+version: "3"
+services:
+  cool-geo-app-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - "DB_HOST=postgres"
+      - "DB_PORT=5432"
+      - "DB_USER=postgres"
+      - "DB_PASSWORD=postgres"
+      - "DB_NAME=cool-geo-app"
+    depends_on:
+      - postgres
+    profiles:
+      - cool-geo-app-api
+  postgres:
+    image: postgis/postgis
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cool-geo-app
+    volumes:
+      - ./db/data/:/tmp/data
+      - ./db/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
