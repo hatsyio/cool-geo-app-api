@@ -29,6 +29,3 @@ FROM '/tmp/data/paystats.csv'
 COPY postal_codes(the_geom,code,id)
 FROM '/tmp/data/postal_codes.csv'
     (FORMAT CSV, DELIMITER ',', HEADER, ENCODING 'UTF8');
-
---pg_dump -Fc --no-acl --no-owner -h localhost -U postgres cool-geo-app > mydb.dump
---pg_restore --verbose --clean --no-acl --no-owner -h ec2-34-242-8-97.eu-west-1.compute.amazonaws.com -U xcauhyiguzxrux -d d6ka3ub4arjj66 mydb.dump
