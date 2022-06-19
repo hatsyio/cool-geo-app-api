@@ -202,6 +202,21 @@ For more examples, please refer to the [Documentation]
 
 _Replace link placeholder for confluence, gitbook, etc._
 
+### Authorization
+
+Added authorization, please sign up as a user and login to get access to the API.
+you need to request a bearer token with the following endpoint:
+
+    POST /authorization/token
+
+    {
+        "username": "username",
+        "password": "password",
+        "scopes": "payments postal-codes"
+    }
+
+Scope payments is used for payments endpoints and scope postal-codes is used for postal-codes endpoints.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- Architecture -->

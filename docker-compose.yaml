@@ -12,6 +12,7 @@ services:
       - "DB_USER=postgres"
       - "DB_PASSWORD=postgres"
       - "DB_NAME=cool-geo-app"
+      - "SECRET_KEY=1751072025a9f1a3a494416deb342e5e9054c5a63ea487c95b7cba3bf42efb81"
     depends_on:
       - postgres
     profiles:
