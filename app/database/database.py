@@ -34,6 +34,8 @@ class Database:
     def run_query_with_params(self, query, params):
         cursor = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute(query, params)
+        if query.lower().startswith("insert"):
+            self.connection.commit()
         result = cursor.fetchall()
         cursor.close()
         return result

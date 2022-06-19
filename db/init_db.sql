@@ -14,6 +14,14 @@ CREATE TABLE postal_codes (
     the_geom GEOMETRY
 );
 
+CREATE TABLE users (
+    username VARCHAR,
+    full_name VARCHAR,
+    email VARCHAR,
+    hashed_password VARCHAR,
+    disabled BOOL
+);
+
 COPY paystats(amount,p_month,p_age,p_gender,postal_code_id,id)
 FROM '/tmp/data/paystats.csv'
     (FORMAT CSV, DELIMITER ',', HEADER, ENCODING 'UTF8');

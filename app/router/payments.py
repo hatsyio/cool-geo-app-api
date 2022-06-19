@@ -1,8 +1,9 @@
 from datetime import datetime
 from functools import lru_cache
 
-from fastapi import APIRouter, Depends, Path, Query
+from fastapi import APIRouter, Depends, Path, Query, Security
 
+from app.authorization import get_current_active_user
 from app.service.models import PaymentAggregation
 from app.service.payments import PaymentsService
 
@@ -13,25 +14,36 @@ router = APIRouter(
 
 
 @lru_cache
-@router.get("/ages")
-async def get_payments_ages(payments_service: PaymentsService = Depends()) -> [str]:
+@router.get(
+    "/ages", dependencies=[Security(get_current_active_user, scopes=["payments"])]
+)
+async def get_payments_ages(
+    payments_service: PaymentsService = Depends(),
+) -> [str]:
     return payments_service.get_ages()
 
 
 @lru_cache
-@router.get("/genders")
+@router.get(
+    "/genders", dependencies=[Security(get_current_active_user, scopes=["payments"])]
+)
 async def get_payments_genders(payments_service: PaymentsService = Depends()) -> [str]:
     return payments_service.get_genders()
 
 
 @lru_cache
-@router.get("/months")
+@router.get(
+    "/months", dependencies=[Security(get_current_active_user, scopes=["payments"])]
+)
 async def get_payments_months(payments_service: PaymentsService = Depends()) -> [str]:
     return payments_service.get_months()
 
 
 @lru_cache
-@router.get("/aggregation")
+@router.get(
+    "/aggregation",
+    dependencies=[Security(get_current_active_user, scopes=["payments"])],
+)
 async def get_payments_aggregation(
     ages: list[str] | None = Query(default=None),
     add_ages: bool = Query(default=False),
@@ -62,7 +74,10 @@ async def get_payments_aggregation(
 
 
 @lru_cache
-@router.get("/aggregation/postal-codes/{postal_code}")
+@router.get(
+    "/aggregation/postal-codes/{postal_code}",
+    dependencies=[Security(get_current_active_user, scopes=["payments"])],
+)
 async def get_payments_aggregation_by_postal_code(
     postal_code: str,
     ages: list[str] | None = Query(default=None),
@@ -92,7 +107,10 @@ async def get_payments_aggregation_by_postal_code(
 
 
 @lru_cache
-@router.get("/aggregation/time-series/{start_date}/{end_date}")
+@router.get(
+    "/aggregation/time-series/{start_date}/{end_date}",
+    dependencies=[Security(get_current_active_user, scopes=["payments"])],
+)
 async def get_payments_aggregation_with_time_series(
     start_date: str = Path(regex=r"^\d{4}-\d{2}-\d{2}$"),
     end_date: str = Path(regex=r"^\d{4}-\d{2}-\d{2}$"),

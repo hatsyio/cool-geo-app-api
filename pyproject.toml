@@ -10,6 +10,9 @@ fastapi = "^0.78.0"
 uvicorn = "^0.17.6"
 psycopg2-binary = "^2.9.3"
 Jinja2 = "^3.1.2"
+python-multipart = "^0.0.5"
+python-jose = "^3.3.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.19.0"
@@ -19,6 +22,7 @@ black = "^22.3.0"
 isort = "^5.10.1"
 pytest = "^7.1.2"
 requests = "^2.28.0"
+pytest-fastapi-deps = "^0.2.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
